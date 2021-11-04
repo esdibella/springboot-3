@@ -1,5 +1,6 @@
 package com.promineotech.jeep.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -30,30 +31,29 @@ public class DefaultJeepSalesDao implements JeepSalesDao {
 
     //@formatter:off
     String sql = ""
-        +"SELECT *"
+        +"SELECT * "
         +"FROM models "
-        + "WHERE model_id :model_id AND trim_level = :trim_level";
+        + "WHERE model_id = :model_id AND trim_level = :trim_level";
     //@formatter:on
 
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("model_id", model.toString());
     params.put("trim_level", trim);
-
-
-
-    return jdbcTemplate.query(sql, params, new RowMapper<>() {
+    
+  return jdbcTemplate.query(sql, params, new RowMapper<>() {
       public Jeep mapRow(ResultSet rs, int rowNum) throws SQLException {
+       // @formatter : off
         return Jeep.builder()
-            .basePrice(new BigDecimal(rs.getString("base_price")))
-            .modelID(JeepModel.valueOf(rs.getString("model_id")))
-            .modelPK(rs.getLong("model_pk"))
-            .numDoors(rs.getInt("num_doors"))
-            .trimLevel(rs.getString("trim_level"))
-            .wheelSize(rs.getInt("wheel_size"))
-            .build();
-
+           .basePrice(new BigDecimal(rs.getString("base_price")))
+           .modelId(JeepModel.valueOf(rs.getString("model_id")))
+           .modelPK(rs.getLong("model_pk"))
+           .numDoors(rs.getInt("num_doors"))
+           .trimLevel(rs.getString("trim_level"))
+           .wheelSize(rs.getInt("wheel_size"))
+           .build();
+        //@formatter: on
       }
-    });
+   });
 
   }
 
