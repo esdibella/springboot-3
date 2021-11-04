@@ -2,6 +2,7 @@ package com.promineotech.jeep.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -47,42 +48,32 @@ class FetchJeepTest {
         String.format("http://localhost:%d/jeeps?model=%s&trim=%s", serverPort, model, trim);
 
 
-    ResponseEntity<List<Jeep>> response =
-        restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<Jeep>>() {});
+    ResponseEntity<List<Jeep>> response = restTemplate.exchange(uri, HttpMethod.GET, null,
+        new ParameterizedTypeReference<List<Jeep>>() {});
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-  
-//    And: the actual list returned is the same as the expected list
+
+    // And: the actual list returned is the same as the expected list
     List<Jeep> actual = response.getBody();
     List<Jeep> expected = buildExpected();
-    
-    
-    
+
+
+
     assertThat(actual).isEqualTo(expected);
-    
+
   }
 
   protected List<Jeep> buildExpected() {
     List<Jeep> list = new LinkedList<Jeep>();
-    
-    list.add(Jeep.builder()
-        .modelId(JeepModel.WRANGLER)
-        .trimLevel("Sport")
-        .numDoors(2)
-        .wheelSize(17)
-        .basePrice(new BigDecimal ("28475.00"))
-        .build());
-    
-    list.add(Jeep.builder()
-        .modelId(JeepModel.WRANGLER)
-        .trimLevel("Sport")
-        .numDoors(4)
-        .wheelSize(17)
-        .basePrice(new BigDecimal ("31975.00"))
-        .build());
-    
-    
-   return list;
+
+    list.add(Jeep.builder().modelId(JeepModel.WRANGLER).trimLevel("Sport").numDoors(2).wheelSize(17)
+        .basePrice(new BigDecimal("28475.00")).build());
+
+    list.add(Jeep.builder().modelId(JeepModel.WRANGLER).trimLevel("Sport").numDoors(4).wheelSize(17)
+        .basePrice(new BigDecimal("31975.00")).build());
+
+    Collections.sort(list);
+    return list;
   }
 
 }

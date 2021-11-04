@@ -1,5 +1,6 @@
 package com.promineotech.jeep.service;
 
+import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,10 @@ public class defaultJeepsSalesService implements JeepSalesService {
   public List<Jeep> fetchJeeps(JeepModel model, String trim) {
     log.info("The fetchJeeps method was called with model={} and trim ={}", model, trim);
    
-    return jeepSalesDao.fetchJeeps(model, trim);
+    List<Jeep> jeeps = jeepSalesDao.fetchJeeps(model, trim);
+    
+    Collections.sort(jeeps);
+    return jeeps;
   }
 
 }
